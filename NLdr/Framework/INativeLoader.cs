@@ -1,13 +1,11 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace NLdr.Framework
-{
+namespace NLdr.Framework {
     /// <summary>
     ///     Defines a contract that describes which functions an unmanaged library loader must implement.
     /// </summary>
-    public interface INativeLoader : IDisposable
-    {
+    public interface INativeLoader : IDisposable {
         /// <summary>
         ///     Frees the handle returned by the <see cref="LoadUnmanagedLibrary" /> method.
         /// </summary>
