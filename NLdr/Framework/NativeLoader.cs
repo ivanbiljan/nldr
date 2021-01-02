@@ -6,12 +6,23 @@ namespace NLdr {
     /// <summary>
     ///     Represents the base class of a native loader.
     /// </summary>
-    public abstract class NativeLoader : INativeLoader {
+    public abstract class NativeLoader {
         private IntPtr _moduleHandle;
+        private bool _isDisposed;
+
+        public static INativeLoader Default =>
+            RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
+                ? (INativeLoader) new LinuxNativeLoader()
+                : new WindowsNativeLoader();
 
         public void Dispose() {
+            if (_isDisposed) {
+                return;
+            }
+            
             ReleaseUnmanagedResources();
             GC.SuppressFinalize(this);
+            _isDisposed = true;
         }
 
         public void LoadUnmanagedLibrary(string path) {
@@ -21,9 +32,10 @@ namespace NLdr {
             }
         }
 
-        public abstract void FreeModuleHandle(IntPtr moduleHandle);
+        public void FreeModuleHandle(IntPtr moduleHandle) => NativeFreeHandle(_moduleHandle);
 
         public Delegate GetDelegate(string functionName, Type delegateType) {
+            ThrowIfDisposed();
             if (functionName == null) {
                 throw new ArgumentNullException(nameof(functionName));
             }
@@ -37,6 +49,7 @@ namespace NLdr {
         }
 
         public T GetDelegate<T>(string functionName) {
+            ThrowIfDisposed();
             if (functionName == null) {
                 throw new ArgumentNullException(nameof(functionName));
             }
@@ -54,11 +67,17 @@ namespace NLdr {
         }
 
         protected abstract IntPtr NativeGetFunctionPointer(IntPtr handle, string functionName);
-
         protected abstract IntPtr NativeGetLibraryHandle(string path);
+        protected abstract void NativeFreeHandle(IntPtr handle);
 
         private void ReleaseUnmanagedResources() {
             FreeModuleHandle(_moduleHandle);
+        }
+
+        private void ThrowIfDisposed() {
+            if (_isDisposed) {
+                throw new ObjectDisposedException(nameof(NativeLoader));
+            }
         }
     }
 }

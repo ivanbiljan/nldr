@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLdr", "NLdr\NLdr.csproj", "{699AF007-79B7-444E-8DC2-58D9654015B6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLdr.Tests", "NLdr.Tests\NLdr.Tests.csproj", "{D4AD66D5-9EC0-495C-9890-EFAD91422E3C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{699AF007-79B7-444E-8DC2-58D9654015B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{699AF007-79B7-444E-8DC2-58D9654015B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{699AF007-79B7-444E-8DC2-58D9654015B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4AD66D5-9EC0-495C-9890-EFAD91422E3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4AD66D5-9EC0-495C-9890-EFAD91422E3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4AD66D5-9EC0-495C-9890-EFAD91422E3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4AD66D5-9EC0-495C-9890-EFAD91422E3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

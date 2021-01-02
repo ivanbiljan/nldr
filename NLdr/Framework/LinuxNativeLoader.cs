@@ -2,22 +2,26 @@
 using System.Runtime.InteropServices;
 
 namespace NLdr.Framework {
-    public sealed class LinuxNativeLoader : NativeLoader {
+    public sealed class LinuxNativeLoader : INativeLoader {
         private const int RtldGlobal = 2;
 
-        public override void FreeModuleHandle(IntPtr moduleHandle) => dlclose(moduleHandle);
-
-        protected override IntPtr NativeGetFunctionPointer(IntPtr handle, string functionName) => dlsym(handle, functionName);
-
-        protected override IntPtr NativeGetLibraryHandle(string path) => dlopen(path, RtldGlobal);
-
         [DllImport("libdl.so")]
-        public static extern int dlclose(IntPtr hModule);
+        private static extern int dlclose(IntPtr hModule);
 
         [DllImport("libdl.so", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
-        public static extern IntPtr dlsym(IntPtr handle, string symbol);
+        private static extern IntPtr dlsym(IntPtr handle, string symbol);
 
         [DllImport("libdl.so", CharSet = CharSet.Ansi, SetLastError = true)]
         private static extern IntPtr dlopen([MarshalAs(UnmanagedType.LPStr)] string fileName, int flags);
+
+        public void FreeModuleHandle(IntPtr moduleHandle) {
+            dlclose(moduleHandle);
+        }
+
+        public IntPtr LoadUnmanagedLibrary(string path) {
+            return dlopen(path, RtldGlobal);
+        }
+
+        public IntPtr GetSymbol(IntPtr handle, string name) => dlsym(handle, name);
     }
 }
